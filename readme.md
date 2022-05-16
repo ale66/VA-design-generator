@@ -18,6 +18,15 @@ and the museum sector.
 
 The workshop will also provide participants with an opportunity to trial the prototype Design Generator application and provide feedback on its development
 
+
+### The pipeline
+
+The schema below describes the current pipeline of our generator; it evolves as data sourcing from the V&A become available.
+Currently the project is running over the [ruDALL-E](https://github.com/ai-forever/ru-dalle) pre-trained branch of [DALL-E](https://openai.com/dall-e-2/) to kick-start its architecture.
+
+![A pipeline for the V&A generator](birkbeck_wf_transfer_learning.png "A pipeline for the V&A generator")
+
+
 ### The team
 
 Our work is funded by [UKRI/AHRC](https://www.ukri.org/councils/ahrc/) via the CapCo call and supported by the [Victoria and Albert Museum](https://www.vam.ac.uk/).

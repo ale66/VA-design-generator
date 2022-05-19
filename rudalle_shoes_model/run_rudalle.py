@@ -1,27 +1,27 @@
 import torch
 import os
 from params import *
-from model import *
 import re
 from PIL import Image
 from advanced_settings import *
 from dataset import *
-from vae import *
 from utils import *
 import gc
 
 input_files = get_input_files(file_selector_glob, do_random_crop)
 input_text = set_input_text()
 
-torch_args = Args(epoch_amt, learning_rate)
-if not os.path.exists(torch_args.save_dir):
-    os.makedirs(torch_args.save_dir)
 
 original_folder = re.sub(r"[/*?]", "-", file_selector_glob)
 print("Identifier", original_folder)
 
 write_data_desc(input_files, input_text, use_filename=True)
+from model import *
+from vae import *
 
+torch_args = Args(epoch_amt, learning_rate)
+if not os.path.exists(torch_args.save_dir):
+    os.makedirs(torch_args.save_dir)
 # Run training on model
 model = freeze(
     model=model,

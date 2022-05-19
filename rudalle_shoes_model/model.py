@@ -46,7 +46,7 @@ vae = get_vae().to("cuda")
 tokenizer = get_tokenizer()
 torch_args = Args(epoch_amt, learning_rate)
 
-st = RuDalleDataset(csv_path="data_desc.csv", tokenizer=tokenizer)
+st = RuDalleDataset(csv_path="data_desc.csv", tokenizer=tokenizer,model=model)
 train_dataloader = DataLoader(
     st, batch_size=torch_args.bs, shuffle=True, drop_last=True
 )

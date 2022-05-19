@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 from torch.utils.data import Dataset
 import torchvision.transforms as T
-from model import *
 import PIL
 
 
@@ -16,19 +15,21 @@ class RuDalleDataset(Dataset):
         self,
         csv_path,
         tokenizer,
+        model,
         resize_ratio=0.75,
         shuffle=True,
         load_first=None,
         caption_score_thr=0.6,
     ):
         """tokenizer - object with methods tokenizer_wrapper.BaseTokenizerWrapper"""
-
+    
         self.text_seq_length = model.get_param("text_seq_length")
         self.tokenizer = tokenizer
         self.target_image_size = 256
         self.image_size = 256
         self.samples = []
-
+        self.model = model 
+        self.device = 'cuda0'
         self.image_transform = T.Compose(
             [
                 T.Lambda(lambda img: img.convert("RGB") if img.mode != "RGB" else img),
@@ -66,8 +67,8 @@ class RuDalleDataset(Dataset):
             random_item = random.randint(0, len(self.samples) - 1)
             return self.__getitem__(random_item)
         text = (
-            tokenizer.encode_text(text, text_seq_length=self.text_seq_length)
+            self.tokenizer.encode_text(text, text_seq_length=self.text_seq_length)
             .squeeze(0)
-            .to(device)
+            .to(self.device)
         )
         return text, image

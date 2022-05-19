@@ -28,14 +28,22 @@ The needed notebook must be loaded there. Various methods exist, probably the ea
 So,
 
 ```bash
-remoteuser@remotehost:>jupyter notebook --nobrowser --port=8888
+remoteuser@remotehost:>jupyter notebook --no-browser --port=8888
 ```
 
 So for me it looks like this:
 
 ```bash
-ale@vasari:>jupyter mynotebook.ipynb --nobrowser --port=8888
+ale@vasari:>jupyter mynotebook --no-browser --port=8888
 ```
+
+The output is going to show a URL which has a long token string at its end, e.g.
+
+```bash
+http://localhost:8888/?token=867c531d9bb6a188bf2214b44e316be8e9c5734b9144b270
+```
+
+we will need the toke part for authentication later.
 
 
 2. on your local computer open a terminal and say
@@ -62,20 +70,15 @@ remoteuser@remotehost:>jupyter notebook --no-browser --port=8888
 
 4. Stop the remote execution
 
-back to the terminal where whe original ``ssh`` connection is still open, give
+back to the terminal where whe original ``ssh`` connection is still open, give ``Control+C`` twice.
 
-```bash
-CTRL+C
-
-Y
-```
+To control for possible hung-up of the server say
 
 ```bash
 localuser@localhost:> sudo netstat -lpn |grep :8888
 ```
 
-this will ;
-print the process number, PID, in parantheses, say ``(500)``.
+this will print the process number, PID, in parantheses, say ``(500)``.
 Then:
 
 ```bash

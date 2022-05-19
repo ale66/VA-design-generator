@@ -79,7 +79,7 @@ print the process number, PID, in parantheses, say ``(500)``.
 Then:
 
 ```bash
-localuser@localhost:> kill 500
+localuser@localhost:>kill 500
 
 localuser@localhost:>exit
 ```

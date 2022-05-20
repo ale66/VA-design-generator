@@ -33,6 +33,6 @@ Our work is funded by [UKRI/AHRC](https://www.ukri.org/councils/ahrc/) via the C
 
 This project is led by [Dr Joel McKim](https://www.bbk.ac.uk/our-staff/profile/8005964/joel-mckim)  directory of the [Vasari Centre for Arts and Technology](http://www7.bbk.ac.uk/vasari/) from Birkbeck, University of London, [Dept. of Film, Media and Cultural Studies](https://www.bbk.ac.uk/departments/culture).
 
-Further members are co-PI [Dr Alessandro Provetti](https://www.bbk.ac.uk/our-staff/profile/8005964/joel-mckim) from Birkbeck, University of London Dept. of Copmputer Science and Information System, [Daphne Demekas](https://github.com/daphnedemekas) and [Josephine Lawson-Tancred](https://github.com/JoLawsonTancred).
+Further members are co-PI [Dr Alessandro Provetti](https://www.bbk.ac.uk/our-staff/profile/8005964/joel-mckim) from Birkbeck, University of London Dept. of Copmputer Science and Information System, [Daphne Demekas](https://github.com/daphnedemekas) and [Jo Lawson-Tancred](https://github.com/JoLawsonTancred).
 
 

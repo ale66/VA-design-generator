@@ -20,3 +20,5 @@ Can we create input text directly from what is in the dataset or do we need to d
 How to judge a good match - closer or wackier? Possibility to offer multiple outputs offering a range?
 
 It may be necessary to filter out any images with text on them - the dataset that ruDALLE was trained on has watermarks and some of the images scraped from the web, such as memes, has text (in Russian)
+
+Russian language: do we want to use a better translation service? Also: Are there any art historical terms (e.g. style names) that do not translate well into Russian? 

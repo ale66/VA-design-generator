@@ -15,3 +15,5 @@ Create a balanced dataset of objects and styles that we might want to be able to
 
 Once we have the data:
 Can we create input text directly from what is in the dataset or do we need to do some preprocessing / clustering to get more discrete / defined styles?
+
+How to judge a good match - closer or wackier? Possibility to offer multiple outputs offering a range?

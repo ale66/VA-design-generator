@@ -158,7 +158,7 @@ def crop_max_square(pil_img):
     return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
 
 
-def generate_images_amt(images_num, generation_p, generation_k, prompt_text):
+def generate_images_amt(vae, model, images_num, generation_p, generation_k, prompt_text):
     _pil_images, _scores = generate_images(
         prompt_text,
         tokenizer,
@@ -173,21 +173,42 @@ def generate_images_amt(images_num, generation_p, generation_k, prompt_text):
 
 def save_pil_images(
     pil_images,
-    onlyfiles,
+    onlyfiles = None,
     save_output=True,
     output_filepath="output",
     original_folder="images",
 ):
     for k in range(len(pil_images)):
-        output_name = f"lg{k + len(onlyfiles)}_{original_folder}.png"
+        output_name = f"lg{k}_{original_folder}.png"
         pil_images[k].save(os.path.join("output", output_name))
         if save_output:
             current_time = datetime.now().strftime("%y-%m-%d_%H-%M-%S")
-            output_name = f"{current_time}_lg{k + len(onlyfiles)}_{original_folder}.png"
+            output_name = f"{current_time}_lg{k}_{original_folder}.png"
             pil_images[k].save(os.path.join(output_filepath, output_name))
+
+def generate(
+    vae,
+    model,
+    input_text,
+    image_amount = 9):
+    (
+        generation_p,
+        generation_k,
+        prompt_text,
+        rurealesrgan_multiplier, #super resolution
+        realesrgan, #super resolution
+    ) = load_params(input_text)
+    pil_images = []
+    pil_images += generate_images_amt(vae, model,
+        image_amount, generation_p, generation_k, prompt_text
+    )
+
+    save_pil_images(pil_images)
+
 
 
 def show_images(
+    vae,
     input_text,
     input_files,
     image_amount=9,
@@ -243,7 +264,7 @@ def show_images(
 
     for i in range(collage_amount):
         for j in range(repeat):
-            pil_images += generate_images_amt(
+            pil_images += generate_images_amt(vae,
                 amt, generation_p, generation_k, prompt_text
             )
         if skip_gt and image_amount != 4:

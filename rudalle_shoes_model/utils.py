@@ -72,16 +72,9 @@ def write_data_desc(input_files, input_text="", use_filename=True, deepl_api_key
             if use_filename:
                 filename = Path(filepath).stem
                 input_lang = ts.language(filename).result.alpha2
-                if input_lang != "ru":
-                    if deepl_api_key != "":
-                        text = DeeplTranslator(
-                            api_key=deepl_api_key,
-                            source=input_lang,
-                            target="ru",
-                            use_free_api=True,
-                        ).translate(filename)
-                else:
-                    text = ts.translate(filename, "ru").result
+                print(input_lang)
+                print(filename)
+                text = ts.translate(filename, "ru").result
             else:
                 text = input_text
             csvwriter.writerow([i, filepath, text])

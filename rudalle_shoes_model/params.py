@@ -26,5 +26,5 @@ def get_learning_rate(universe_similarity="Low"):
         learning_rate = 1e-6
     elif universe_similarity == "Ultra-High":
         learning_rate = 2e-4
-
+    return learning_rate
 learning_rate = get_learning_rate(universe_similarity)

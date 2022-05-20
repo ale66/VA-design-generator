@@ -1,5 +1,5 @@
 import math
-
+import gc
 import torch
 from einops import rearrange
 from PIL import Image
@@ -299,4 +299,4 @@ def show_images(
         scores = []
 
 
-gc.collect()
+

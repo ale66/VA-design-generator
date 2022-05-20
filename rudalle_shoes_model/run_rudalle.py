@@ -9,7 +9,7 @@ from utils import *
 import gc
 
 input_files = get_input_files(file_selector_glob, do_random_crop)
-input_text = set_input_text()
+input_text = ''
 
 
 original_folder = re.sub(r"[/*?]", "-", file_selector_glob)

@@ -3,6 +3,7 @@ import os
 import random
 import numpy as np
 import pandas as pd
+import torch
 from torch.utils.data import Dataset
 import torchvision.transforms as T
 import PIL
@@ -29,7 +30,7 @@ class RuDalleDataset(Dataset):
         self.image_size = 256
         self.samples = []
         self.model = model 
-        self.device = 'cuda0'
+        self.device = torch.device('cuda:0')
         self.image_transform = T.Compose(
             [
                 T.Lambda(lambda img: img.convert("RGB") if img.mode != "RGB" else img),
@@ -61,7 +62,7 @@ class RuDalleDataset(Dataset):
         image_path, text = self.samples[item]
         try:
             image = self.load_image(image_path)
-            image = self.image_transform(image).to(device)
+            image = self.image_transform(image).to(self.device)
         except Exception as err:  # noqa
             print(err)
             random_item = random.randint(0, len(self.samples) - 1)

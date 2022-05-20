@@ -78,4 +78,4 @@ def write_data_desc(input_files, input_text="", use_filename=True, deepl_api_key
             else:
                 text = input_text
             csvwriter.writerow([i, filepath, text])
-
+    return text

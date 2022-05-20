@@ -80,7 +80,7 @@ def aspect_crop(image_path, desired_aspect_ratio):
 
 
 def load_params(
-    input_text, prompt_text="", confidence="Ultra-Low", variability="Ultra-High"
+    input_text, prompt_text="",confidence="Ultra-Low", variability="Ultra-High"
 ):
     """Parameters
     Confidence is how closely the AI will attempt to match the input images.
@@ -116,13 +116,14 @@ def load_params(
     # @markdown If you'd like to prompt the AI with a different text input than what your images are captioned with, you can do so here. Leave blank to use your `input_text`. Text is automatically translated to Russian.
     if prompt_text == "":
         prompt_text = input_text
-    else:
-        input_lang = ts.language(input_text).result.alpha2
+        
+    input_lang = ts.language(prompt_text).result.alpha2
     if input_lang != "ru":
         prompt_text = ts.translate(input_text, "ru").result
 
     # Uses RealESRGAN to upscale your images at the end. That's it! Set to x1 to disable. Not recommended to be combined w/ Stretchsizing.
     rurealesrgan_multiplier = "x1"  # @param ["x1", "x2", "x4", "x8"]
+    realesrgan = None
     if rurealesrgan_multiplier != "x1":
         realesrgan = get_realesrgan(rurealesrgan_multiplier, device=device)
 
@@ -209,6 +210,7 @@ def show_images(
     rows = 2
     insert = 0
     amt = 3
+    skip_gt = False
     if skip_gt:
         amt = 4
     if low_mem:

@@ -14,6 +14,10 @@ from torch.utils.data import  DataLoader
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 
+from functools import reduce 
+import torch.nn.functional as F
+from rudalle.dalle.utils import exists, is_empty
+from einops import rearrange
 ram_gb = round(virtual_memory().total / 1024**3, 1)
 
 print("CPU:", multiprocessing.cpu_count())
@@ -100,7 +104,7 @@ class Layer(torch.nn.Module):
         return self.f(self.x(x, *self.args, **self.kwargs))
 
 
-def forward(
+def _forward(
     self,
     input_ids,
     attention_mask,
@@ -214,9 +218,12 @@ def train(model, input_files, args: Args, train_dataloader: RuDalleDataset):
         )
         save_counter = 0
         for epoch in range(args.epochs):
+            print(epoch)
             for text, images in train_dataloader:
                 device = model.get_param("device")
                 save_counter += 1
+                print(save_counter)
+                print('model.zero_grad()')
                 model.zero_grad()
                 attention_mask = torch.tril(
                     torch.ones(
@@ -225,9 +232,10 @@ def train(model, input_files, args: Args, train_dataloader: RuDalleDataset):
                     )
                 )
                 image_input_ids = vae.get_codebook_indices(images)
-
+                print('image input ids')
+                print(image_input_ids)
                 input_ids = torch.cat((text, image_input_ids), dim=1)
-                _, loss = forward(
+                _, loss = _forward(
                     model.module,
                     input_ids,
                     attention_mask.half(),
@@ -237,11 +245,14 @@ def train(model, input_files, args: Args, train_dataloader: RuDalleDataset):
                 )
                 loss = loss["image"]
                 # train step
+                print('loss.backward()')
+
                 loss.backward()
 
                 torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
                 optimizer.step()
                 scheduler.step()
+                print('optimizer.zero_grad()')
                 optimizer.zero_grad()
                 # save every here
                 if save_counter % args.save_every == 0:

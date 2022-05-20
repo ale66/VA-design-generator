@@ -28,3 +28,5 @@ def get_learning_rate(universe_similarity="Low"):
         learning_rate = 2e-4
     return learning_rate
 learning_rate = get_learning_rate(universe_similarity)
+
+#Optimizer

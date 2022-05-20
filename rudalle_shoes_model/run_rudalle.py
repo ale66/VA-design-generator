@@ -38,17 +38,17 @@ def train():
 
 #if do_resize:
 #    vae.decode = partial(slow_decode, vae)
-def generate():
+def generate_imgs():
     gc.collect()
     torch.cuda.empty_cache()
 
     vae = get_vae().to(device)
-    model_path = os.path.join('/content/lookingglass_dalle_last.pt')
-    model = get_rudalle_model('Malevich', pretrained=True, fp16=True, device=device)
+    model_path = os.path.join('checkpoints/lookingglass_dalle_last.pt')
+   
     model.load_state_dict(torch.load(model_path))
 
     generate(vae, model, input_text, image_amount = 15)
 
 if __name__ == '__main__':
     #train()
-    generate()
+    generate_imgs()

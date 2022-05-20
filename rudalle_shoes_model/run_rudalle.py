@@ -16,8 +16,6 @@ original_folder = re.sub(r"[/*?]", "-", file_selector_glob)
 print("Identifier", original_folder)
 
 input_text = write_data_desc(input_files, input_text, use_filename=True)
-print('input text')
-print(input_text)
 
 from model import *
 from vae import *

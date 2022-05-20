@@ -72,8 +72,6 @@ def write_data_desc(input_files, input_text="", use_filename=True, deepl_api_key
             if use_filename:
                 filename = Path(filepath).stem
                 input_lang = ts.language(filename).result.alpha2
-                print(input_lang)
-                print(filename)
                 text = ts.translate(filename, "ru").result
             else:
                 text = input_text

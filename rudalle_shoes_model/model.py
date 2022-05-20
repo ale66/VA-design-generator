@@ -13,7 +13,7 @@ from transformers import AdamW
 from torch.utils.data import  DataLoader
 from tqdm import tqdm
 import matplotlib.pyplot as plt
-
+import pickle
 from functools import reduce 
 import torch.nn.functional as F
 from rudalle.dalle.utils import exists, is_empty
@@ -276,8 +276,8 @@ def train(model, input_files, args: Args, train_dataloader: RuDalleDataset):
 
         print(f"Completly tuned and saved here  {args.model_name}__dalle_last.pt")
 
-        plt.plot(loss_logs)
-        plt.show()
+        with open('lossdata.pkl', 'wb') as f:
+            pickle.dump(loss_logs, f)
 
         torch.save(
             model.state_dict(),

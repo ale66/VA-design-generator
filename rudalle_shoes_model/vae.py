@@ -189,6 +189,7 @@ def save_pil_images(
 def generate(
     vae,
     model,
+    confidence,
     input_text,
     image_amount = 9):
     (
@@ -197,7 +198,7 @@ def generate(
         prompt_text,
         rurealesrgan_multiplier, #super resolution
         realesrgan, #super resolution
-    ) = load_params(input_text)
+    ) = load_params(input_text=input_text, confidence=confidence)
     pil_images = []
     pil_images += generate_images_amt(vae, model,
         image_amount, generation_p, generation_k, prompt_text
@@ -224,7 +225,7 @@ def show_images(
         prompt_text,
         rurealesrgan_multiplier,
         realesrgan,
-    ) = load_params(input_text)
+    ) = load_params(input_text = input_text)
     pil_images = []
     scores = []
     repeat = 1

@@ -29,4 +29,5 @@ def get_learning_rate(universe_similarity="Low"):
     return learning_rate
 learning_rate = get_learning_rate(universe_similarity)
 
+confidence = "Medium"
 #Optimizer

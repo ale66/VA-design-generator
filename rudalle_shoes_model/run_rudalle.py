@@ -41,14 +41,16 @@ def train():
 def generate_imgs():
     gc.collect()
     torch.cuda.empty_cache()
-
+    input_text = 'abstract shoe'
     vae = get_vae().to(device)
     model_path = os.path.join('checkpoints/lookingglass_dalle_last.pt')
-   
+
     model.load_state_dict(torch.load(model_path))
 
-    generate(vae, model, input_text, image_amount = 15)
+    generate(vae, model, input_text, confidence = confidence, image_amount = 10)
 
 if __name__ == '__main__':
     #train()
+    
+
     generate_imgs()

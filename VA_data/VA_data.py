@@ -10,6 +10,14 @@ from webcolors import (
     CSS3_HEX_TO_NAMES,
     hex_to_rgb,
 )
+import time
+import matplotlib.pyplot as plt
+
+left = 201
+upper=268
+right =374
+bottom = 499
+
 def convert_rgb_to_names(rgb_tuple):
     # a dictionary of all the hex and their respective names in css3
     css3_db = CSS3_HEX_TO_NAMES
@@ -23,16 +31,17 @@ def convert_rgb_to_names(rgb_tuple):
     return names[index]
 
 def center_crop(img, frac = 0.1):
-    img = Image.fromarray(img)
-    left = img.size[0]*((1-frac)/2)
-    upper = img.size[1]*((1-frac)/2)
-    right = img.size[0]-((1-frac)/2)*img.size[0]
-    bottom = img.size[1]-((1-frac)/2)*img.size[1]
-    cropped_img = img.crop((left, upper, right, bottom))
+    #img = Image.fromarray(img)
+    img = img[...,::-1]
+    left = int(img.shape[0]*((1-frac)/2))
+    upper = int(img.shape[1]*((1-frac)/2))
+    right = int(img.shape[0]-((1-frac)/2)*img.shape[0])
+    bottom = int(img.shape[1]-((1-frac)/2)*img.shape[1])
+    cropped_img = img[left:right, upper:bottom, :]
     return cropped_img
 
 def get_dominant_color(pil_img):
-    img = pil_img.copy()
+    img = Image.fromarray(pil_img)
     img = img.convert("RGB")
     img = img.resize((1, 1), resample=0)
     dominant_color = img.getpixel((0, 0))
@@ -45,7 +54,7 @@ def get_images_by_type(object_type, save = True):
     num_pages = object_info["pages"]
     print(f"num pages={num_pages}")
     for page in range(num_pages):
-
+        time.sleep(5)
         req = requests.get(
             f'https://api.vam.ac.uk/v2/objects/search?q_object_type="{object_type}"&page={page}'
         )
@@ -67,7 +76,9 @@ def get_images_by_type(object_type, save = True):
                         + ", "
                         + record["_primaryDate"]
                     )
-                    if save and not os.path.exists(f"VA_data/jugs/{caption}.jpg"):
+                    if save:
+                        if not os.path.exists(f"VA_data/{object_type}"):
+                            os.mkdir(f"VA_data/{object_type}/")
                         print(f"appending image with caption {caption} ")
                         cv2.imwrite(f"VA_data/{object_type}/{caption}.jpg", img)
             except Exception as e:
@@ -76,7 +87,7 @@ def get_images_by_type(object_type, save = True):
                 continue
 
 
-get_images_by_type("clock", save = True)
+get_images_by_type("jug", save = True)
 
 # images = np.load('img_data.npy')
 # download_jpegs(images)

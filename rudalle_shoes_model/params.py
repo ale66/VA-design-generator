@@ -1,19 +1,29 @@
+''' Currently using Translator without a DEEPL API key but this might be something 
+worth doing '''
+
 from translatepy import Translator
 ts = Translator()
 
-""" Set parameters"""
+""" Set file parameters"""
 file_selector_glob = "images-labelled/*"
+
+'''Number of epochs - might want to try training for longer'''
 epoch_amt = 50
+
+'''Random crop might be useful if we want to artificially get more perspectives of the object'''
 do_random_crop = False
 
-
+'''Universe similarity determines how close to the original images you will receive. 
+Higher similarity produces images that try to stick closely to the original. 
+Lower similarity produces images that use the original more as inspiration. 
+**If you are getting spooky Russian AI ghosts, try turning your similarity higher or training for longer.** '''
 universe_similarity = (
     "Medium"  # @param ["Ultra-High","High", "Medium", "Low","Ultra-Low"]
 )
+
 # Enabling `use_filename` will cause your input text to be overwritten by the filenames of your pictures
 use_filename = True
-# If you'd like to change the shape or size of the output from its default 256x256 set "resize" to true. Note that this is **much slower**.
-do_resize = False  # @param {type:"boolean"}
+
 
 def get_learning_rate(universe_similarity="Low"):
     if universe_similarity == "High":
@@ -29,5 +39,16 @@ def get_learning_rate(universe_similarity="Low"):
     return learning_rate
 learning_rate = get_learning_rate(universe_similarity)
 
+''' How many which layers we are freezing from the original model will have an affect on how our fine-tuning affects the parameters'''
+freeze_emb=True
+freeze_ln=False
+freeze_attn=False
+freeze_ff=True
+freeze_other=True
+
+''' If you'd like to change the shape or size of the output from its default 256x256 set "resize" to true. Note that this is **much slower**.'''
+do_resize = False  # @param {type:"boolean"}
+
 confidence = "Medium"
+variability = "Ultra-High"
 #Optimizer

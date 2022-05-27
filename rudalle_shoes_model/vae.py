@@ -191,6 +191,7 @@ def generate(
     model,
     input_text,
     confidence,
+    variability,
     image_amount = 9):
     (
         generation_p,
@@ -198,7 +199,7 @@ def generate(
         prompt_text,
         rurealesrgan_multiplier, #super resolution
         realesrgan, #super resolution
-    ) = load_params(input_text=input_text, confidence=confidence)
+    ) = load_params(input_text=input_text, confidence=confidence, variability=variability)
     pil_images = []
     pil_images += generate_images_amt(vae, model,
         image_amount, generation_p, generation_k, prompt_text

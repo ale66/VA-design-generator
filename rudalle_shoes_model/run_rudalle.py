@@ -19,6 +19,7 @@ print("Identifier", original_folder)
 #input_text = write_data_desc(input_files, input_text, use_filename=True)
 
 def run_training(model):
+    from params import *
 
     print('Loading arguments for training ...')
 
@@ -28,11 +29,11 @@ def run_training(model):
     # Run training on model
     model = freeze(
         model=model,
-        freeze_emb=False,
-        freeze_ln=False,
-        freeze_attn=True,
-        freeze_ff=True,
-        freeze_other=False,
+        freeze_emb=freeze_emb,
+        freeze_ln=freeze_ln,
+        freeze_attn=freeze_attn,
+        freeze_ff=freeze_ff,
+        freeze_other=freeze_other,
     )
     print('Beginning training ...')
 
@@ -42,6 +43,8 @@ def run_training(model):
 #if do_resize:
 #    vae.decode = partial(slow_decode, vae)
 def generate_imgs():
+    from params import *
+
     gc.collect()
     torch.cuda.empty_cache()
     input_text = 'red shoe'
@@ -51,7 +54,7 @@ def generate_imgs():
     model.load_state_dict(torch.load(model_path))
     print('confidence')
     print(confidence)
-    generate(vae, model, input_text, confidence = confidence, image_amount = 10)
+    generate(vae, model, input_text, confidence = confidence, variability = variability, image_amount = 10)
 
 if __name__ == '__main__':
     from train import *

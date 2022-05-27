@@ -10,7 +10,7 @@ import csv
 random_crop_size = 240
 num_crops = 24
 
-def get_input_files(file_selector_glob, do_random_crop):
+def get_input_files(file_selector_glob, do_random_crop=False):
     input_files = glob.glob(file_selector_glob, recursive=True)
     for i in input_files:
         if "_" in i:
@@ -22,7 +22,6 @@ def get_input_files(file_selector_glob, do_random_crop):
                 "Please remove all apostrophes (the ' character) from your files before proceeding!"
             )
 
-    print("Input files:", input_files)
     if len(input_files) == 0:
         print(
             "Your input files are empty! This will error out - make sure your file_selector_glob is formatted correctly!"
@@ -64,6 +63,7 @@ def set_input_text(input_text="", deepl_api_key=""):
 
 
 def write_data_desc(input_files, input_text="", use_filename=True, deepl_api_key=""):
+
     with open("data_desc.csv", "w", newline="") as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=",")
         csvwriter.writerow(["", "name", "caption"])
@@ -76,4 +76,6 @@ def write_data_desc(input_files, input_text="", use_filename=True, deepl_api_key
             else:
                 text = input_text
             csvwriter.writerow([i, filepath, text])
+
+    print(f'Wrote {len(input_files)} lines to the data_desc file')
     return text

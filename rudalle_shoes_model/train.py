@@ -222,8 +222,6 @@ def train(model, input_files, args: Args, train_dataloader: RuDalleDataset):
             for text, images in train_dataloader:
                 device = model.get_param("device")
                 save_counter += 1
-                print(save_counter)
-                print('model.zero_grad()')
                 model.zero_grad()
                 attention_mask = torch.tril(
                     torch.ones(
@@ -245,15 +243,13 @@ def train(model, input_files, args: Args, train_dataloader: RuDalleDataset):
                 )
                 loss = loss["image"]
                 # train step
-                print('loss.backward()')
-
                 loss.backward()
 
                 torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
                 optimizer.step()
                 scheduler.step()
-                print('optimizer.zero_grad()')
                 optimizer.zero_grad()
+                print(f'Loss: {loss}')
                 # save every here
                 if save_counter % args.save_every == 0:
                     print(
@@ -261,7 +257,7 @@ def train(model, input_files, args: Args, train_dataloader: RuDalleDataset):
                     )
 
                     plt.plot(loss_logs)
-                    plt.show()
+                    plt.savefig('Loss curve')
                     torch.save(
                         model.state_dict(),
                         os.path.join(

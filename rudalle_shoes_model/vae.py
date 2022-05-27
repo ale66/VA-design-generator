@@ -3,7 +3,7 @@ import gc
 import torch
 from einops import rearrange
 from PIL import Image
-from model import *
+from train import *
 from datetime import datetime
 import os
 from rudalle import get_realesrgan
@@ -189,8 +189,8 @@ def save_pil_images(
 def generate(
     vae,
     model,
-    confidence,
     input_text,
+    confidence,
     image_amount = 9):
     (
         generation_p,

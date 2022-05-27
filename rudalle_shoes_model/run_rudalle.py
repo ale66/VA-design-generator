@@ -10,16 +10,17 @@ import gc
 
 input_files = get_input_files(file_selector_glob, do_random_crop)
 input_text = ''
+print(f'Got {len(input_files)} images!')
 
 
 original_folder = re.sub(r"[/*?]", "-", file_selector_glob)
 print("Identifier", original_folder)
 
-input_text = write_data_desc(input_files, input_text, use_filename=True)
+#input_text = write_data_desc(input_files, input_text, use_filename=True)
 
-from model import *
-from vae import *
-def train():
+def run_training(model):
+
+    print('Loading arguments for training ...')
 
     torch_args = Args(epoch_amt, learning_rate)
     if not os.path.exists(torch_args.save_dir):
@@ -33,6 +34,8 @@ def train():
         freeze_ff=True,
         freeze_other=False,
     )
+    print('Beginning training ...')
+
     # freeze params to
     train(model, input_files, torch_args, train_dataloader)
 
@@ -41,16 +44,21 @@ def train():
 def generate_imgs():
     gc.collect()
     torch.cuda.empty_cache()
-    input_text = 'abstract shoe'
+    input_text = 'red shoe'
     vae = get_vae().to(device)
     model_path = os.path.join('checkpoints/lookingglass_dalle_last.pt')
 
     model.load_state_dict(torch.load(model_path))
-
+    print('confidence')
+    print(confidence)
     generate(vae, model, input_text, confidence = confidence, image_amount = 10)
 
 if __name__ == '__main__':
-    #train()
+    from train import *
+    from train import model
+
+    from vae import *
+    run_training(model)
     
 
     generate_imgs()

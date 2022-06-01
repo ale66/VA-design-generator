@@ -52,3 +52,6 @@ do_resize = False  # @param {type:"boolean"}
 confidence = "Medium"
 variability = "Ultra-High"
 #Optimizer
+
+#superresolution
+rurealesrgan_multiplier = "x4"  # @param ["x1", "x2", "x4", "x8"]

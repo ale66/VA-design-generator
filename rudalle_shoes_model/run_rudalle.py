@@ -54,7 +54,7 @@ def generate_imgs():
     model.load_state_dict(torch.load(model_path))
     print('confidence')
     print(confidence)
-    generate(vae, model, input_text, confidence = confidence, variability = variability, image_amount = 10)
+    generate(vae, model, input_text, confidence = confidence, variability = variability, rurealesrgan_multiplier=rurealesrgan_multiplier, image_amount = 10)
 
 if __name__ == '__main__':
     from train import *

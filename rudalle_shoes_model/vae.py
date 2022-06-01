@@ -80,7 +80,7 @@ def aspect_crop(image_path, desired_aspect_ratio):
 
 
 def load_params(
-    input_text, prompt_text="",confidence="Ultra-Low", variability="Ultra-High"
+    input_text, prompt_text="",confidence="Ultra-Low", variability="Ultra-High", rurealesrgan_multiplier="x1"
 ):
     """Parameters
     Confidence is how closely the AI will attempt to match the input images.
@@ -122,7 +122,6 @@ def load_params(
         prompt_text = ts.translate(input_text, "ru").result
 
     # Uses RealESRGAN to upscale your images at the end. That's it! Set to x1 to disable. Not recommended to be combined w/ Stretchsizing.
-    rurealesrgan_multiplier = "x1"  # @param ["x1", "x2", "x4", "x8"]
     realesrgan = None
     if rurealesrgan_multiplier != "x1":
         realesrgan = get_realesrgan(rurealesrgan_multiplier, device=device)
@@ -139,7 +138,7 @@ def load_params(
         do_swinir = True
         rurealesrgan_multiplier = "x1"
 
-    return generation_p, generation_k, prompt_text, rurealesrgan_multiplier, realesrgan
+    return generation_p, generation_k, prompt_text, realesrgan
 
 
 def crop_center(pil_img, crop_width, crop_height):
@@ -192,14 +191,14 @@ def generate(
     input_text,
     confidence,
     variability,
+    rurealesrgan_multiplier,
     image_amount = 9):
     (
         generation_p,
         generation_k,
         prompt_text,
-        rurealesrgan_multiplier, #super resolution
         realesrgan, #super resolution
-    ) = load_params(input_text=input_text, confidence=confidence, variability=variability)
+    ) = load_params(input_text=input_text, confidence=confidence, variability=variability, rurealesrgan_multiplier=rurealesrgan_multiplier)
     pil_images = []
     pil_images += generate_images_amt(vae, model,
         image_amount, generation_p, generation_k, prompt_text

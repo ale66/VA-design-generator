@@ -6,6 +6,7 @@ from PIL import Image
 from train import *
 from datetime import datetime
 import os
+from params import *
 from rudalle import get_realesrgan
 from rudalle.pipelines import (
     generate_images,
@@ -82,6 +83,9 @@ def aspect_crop(image_path, desired_aspect_ratio):
 def load_params(
     input_text, prompt_text="",confidence="Ultra-Low", variability="Ultra-High", rurealesrgan_multiplier="x1"
 ):
+    from translatepy import Translator
+    ts = Translator()
+
     """Parameters
     Confidence is how closely the AI will attempt to match the input images.
     Higher confidence, the more the AI can go "off the rails".
@@ -157,7 +161,7 @@ def crop_max_square(pil_img):
     return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
 
 
-def generate_images_amt(vae, model, images_num, generation_p, generation_k, prompt_text):
+def generate_images_amt(vae, model, images_num, realesrgan, generation_p, generation_k, prompt_text):
     _pil_images, _scores = generate_images(
         prompt_text,
         tokenizer,
@@ -167,6 +171,9 @@ def generate_images_amt(vae, model, images_num, generation_p, generation_k, prom
         images_num=images_num,
         top_p=generation_p,
     )
+    
+    if realesrgan:
+        _pil_images = super_resolution(_pil_images, realesrgan)
     return _pil_images
 
 
@@ -192,6 +199,7 @@ def generate(
     confidence,
     variability,
     rurealesrgan_multiplier,
+    output_filepath,
     image_amount = 9):
     (
         generation_p,
@@ -201,12 +209,12 @@ def generate(
     ) = load_params(input_text=input_text, confidence=confidence, variability=variability, rurealesrgan_multiplier=rurealesrgan_multiplier)
     pil_images = []
     pil_images += generate_images_amt(vae, model,
-        image_amount, generation_p, generation_k, prompt_text
+        image_amount, realesrgan, generation_p, generation_k, prompt_text
     )
 
-    save_pil_images(pil_images)
+    save_pil_images(pil_images, output_filepath = output_filepath)
 
-
+"""
 
 def show_images(
     vae,
@@ -321,6 +329,6 @@ def show_images(
 
         pil_images = []
         scores = []
-
+"""
 
 

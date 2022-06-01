@@ -49,8 +49,13 @@ freeze_other=True
 ''' If you'd like to change the shape or size of the output from its default 256x256 set "resize" to true. Note that this is **much slower**.'''
 do_resize = False  # @param {type:"boolean"}
 
-confidence = "Medium"
-variability = "Ultra-High"
+#@markdown Confidence is how closely the AI will attempt to match the input images. Higher confidence, the more the AI can go "off the rails". This variable is also called "top_p". Think of confidence as the "conceptual similarity" control. Default for prior versions is Low.
+
+confidence = "Medium" #default Medium
+
+#@markdown Variability affects the potential number of options that the AI can choose from for each "token", or each 8x8 chunk of pixels that it generates. Higher variability, higher amount. This variable is also called "top_k". Think of variability as the "stylistic similarity" control. Default for prior versions is "High".
+
+variability = "Ultra-Low" #default Ultra-High
 #Optimizer
 
 #superresolution

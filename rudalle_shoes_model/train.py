@@ -50,24 +50,28 @@ vae = get_vae().to("cuda")
 tokenizer = get_tokenizer()
 torch_args = Args(epoch_amt, learning_rate)
 
-st = RuDalleDataset(csv_path="data_desc.csv", tokenizer=tokenizer,model=model)
-train_dataloader = DataLoader(
+training = False
+
+
+if training:
+    st = RuDalleDataset(csv_path=".data_desc.csv", tokenizer=tokenizer,model=model)
+
+    train_dataloader = DataLoader(
     st, batch_size=torch_args.bs, shuffle=True, drop_last=True
-)
+    )
+    model.train()
+    torch_args.wandb = False
 
+    optimizer = AdamW(model.parameters(), lr=torch_args.lr)
+
+    scheduler = torch.optim.lr_scheduler.OneCycleLR(
+        optimizer,
+        max_lr=torch_args.lr,
+        final_div_factor=500,
+        steps_per_epoch=len(train_dataloader),
+        epochs=torch_args.epochs,
+    )
 # Setup logs
-torch_args.wandb = False
-
-model.train()
-optimizer = AdamW(model.parameters(), lr=torch_args.lr)
-
-scheduler = torch.optim.lr_scheduler.OneCycleLR(
-    optimizer,
-    max_lr=torch_args.lr,
-    final_div_factor=500,
-    steps_per_epoch=len(train_dataloader),
-    epochs=torch_args.epochs,
-)
 
 def freeze(
     model,

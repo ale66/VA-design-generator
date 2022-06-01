@@ -6,6 +6,7 @@ from PIL import Image
 from train import *
 from datetime import datetime
 import os
+from params import *
 from rudalle import get_realesrgan
 from rudalle.pipelines import (
     generate_images,
@@ -82,6 +83,9 @@ def aspect_crop(image_path, desired_aspect_ratio):
 def load_params(
     input_text, prompt_text="",confidence="Ultra-Low", variability="Ultra-High"
 ):
+    from translatepy import Translator
+    ts = Translator()
+
     """Parameters
     Confidence is how closely the AI will attempt to match the input images.
     Higher confidence, the more the AI can go "off the rails".
@@ -192,6 +196,7 @@ def generate(
     input_text,
     confidence,
     variability,
+    output_filepath,
     image_amount = 9):
     (
         generation_p,
@@ -205,7 +210,7 @@ def generate(
         image_amount, generation_p, generation_k, prompt_text
     )
 
-    save_pil_images(pil_images)
+    save_pil_images(pil_images, output_filepath = output_filepath)
 
 
 

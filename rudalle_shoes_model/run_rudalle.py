@@ -45,7 +45,7 @@ def parameter_sweep(prompts, confidences, variabilities):
     for prompt in prompts:
             for confidence in confidences:
                 for variability in variabilities:
-                    directory_name = f'final_high_res_10000'
+                    directory_name = f'scores_10000/{prompt}'
                     if not os.path.exists(directory_name):
                         os.mkdir(directory_name)
                     print(f'generating directory: {directory_name}')
@@ -59,16 +59,16 @@ if __name__ == '__main__':
 
     #run_training(model)
 
-    confidences = ['Medium','Ultra-High']
-    variabilities=['Ultra-Low','Medium','Ultra-High']
+    confidences = ['Medium']
+    variabilities=['Ultra-High']
     gc.collect()
     torch.cuda.empty_cache()
     vae = get_vae().to(device)
-    model_path = os.path.join('checkpoints/lookingglass_dalle_10000.pt')
+    model_path = os.path.join('checkpoints/lookingglass_dalle_12000.pt')
 
     model.load_state_dict(torch.load(model_path))
-    prompts = ['surrealist shoe clock', 'prints & drawings']
-    
+    prompts = ['prints & drawings','vase clock']
+
     parameter_sweep(prompts, confidences=confidences, variabilities=variabilities)
 
 

@@ -185,15 +185,14 @@ def generate_images_amt(vae, model, images_num, realesrgan, generation_p, genera
 def save_pil_images(
     pil_images,
     scores,
-    onlyfiles = None,
     save_output=True,
     output_filepath="output",
 ):
     for k in range(len(pil_images)):
-        score_name = f"{scores[k]}.png"
+        score = f"{scores[k]}.png"
         if save_output:
             current_time = datetime.now().strftime("%y-%m-%d_%H-%M-%S")
-            output_name = f"{current_time}_{k}_{score_name}.png"
+            output_name = f"{current_time}_{k}_score:{score}.png"
             pil_images[k].save(os.path.join(output_filepath, output_name))
 
 def generate(

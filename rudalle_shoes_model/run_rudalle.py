@@ -43,31 +43,45 @@ def run_training(model):
 #    vae.decode = partial(slow_decode, vae)
 def parameter_sweep(prompts, confidences, variabilities):
     for prompt in prompts:
-            for confidence in values:
-                for variability in values:
-                    directory_name = f'{prompt} confidence={confidence} variability={variability}'
+            for confidence in confidences:
+                for variability in variabilities:
+                    directory_name = f'final_high_res_10000'
                     if not os.path.exists(directory_name):
                         os.mkdir(directory_name)
                     print(f'generating directory: {directory_name}')
                     with torch.no_grad():
-                        generate(vae, model, prompt, confidence = confidence, variability = variability, rurealesrgan_multiplier=rurealesrgan_multiplier, output_filepath=directory_name, image_amount = 3)
+                        generate(vae, model, prompt, confidence = confidence, variability = variability, rurealesrgan_multiplier=rurealesrgan_multiplier, output_filepath=directory_name, image_amount = 9)
+
 
 if __name__ == '__main__':
     from train import model
-    from vae import vae, get_vae, device, generate
+    from vae import vae, get_vae, device, generate, generate_high_res
 
     #run_training(model)
 
-    values = ['Ultra-Low', 'Medium', 'Ultra-High']
+    confidences = ['Medium','Ultra-High']
+    variabilities=['Ultra-Low','Medium','Ultra-High']
     gc.collect()
     torch.cuda.empty_cache()
     vae = get_vae().to(device)
-    model_path = os.path.join('checkpoints/lookingglass_dalle_12000.pt')
+    model_path = os.path.join('checkpoints/lookingglass_dalle_10000.pt')
 
     model.load_state_dict(torch.load(model_path))
-    prompts = ['glass shoe', 'clocks', 'clock drawing', 'prints & drawing', 'clock shoe', 'vase clock', 'metal shoe', 'ceramic shoe', 'baroque clock', 'jug']
+    prompts = ['surrealist shoe clock', 'prints & drawings']
     
-    parameter_sweep(prompts, confidences=values, variabilities=values)
+    parameter_sweep(prompts, confidences=confidences, variabilities=variabilities)
+
+
+
+
+
+
+
+    #low_res_img_path = 'lowres_vase_clock.png'
+
+    #high_res = generate_high_res(low_res_img_path,rurealesrgan_multiplier,device)
+    #high_res.save('highresvaseclock2.png')
+
 
 
     

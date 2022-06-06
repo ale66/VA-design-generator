@@ -79,6 +79,11 @@ def aspect_crop(image_path, desired_aspect_ratio):
     elif original_aspect == computed_aspect_ratio:
         return image
 
+def generate_high_res(image, multiplier,device):
+    image = [Image.open(image)]
+    realesrgan = get_realesrgan(multiplier, device=device)
+    high_res = super_resolution(image, realesrgan)
+    return high_res[0]
 
 def load_params(
     input_text, prompt_text="",confidence="Ultra-Low", variability="Ultra-High", rurealesrgan_multiplier="x1"
@@ -174,22 +179,21 @@ def generate_images_amt(vae, model, images_num, realesrgan, generation_p, genera
     
     if realesrgan:
         _pil_images = super_resolution(_pil_images, realesrgan)
-    return _pil_images
+    return _pil_images, _scores
 
 
 def save_pil_images(
     pil_images,
+    scores,
     onlyfiles = None,
     save_output=True,
     output_filepath="output",
-    original_folder="images",
 ):
     for k in range(len(pil_images)):
-        output_name = f"lg{k}_{original_folder}.png"
-        pil_images[k].save(os.path.join("output", output_name))
+        score_name = f"{scores[k]}.png"
         if save_output:
             current_time = datetime.now().strftime("%y-%m-%d_%H-%M-%S")
-            output_name = f"{current_time}_lg{k}_{original_folder}.png"
+            output_name = f"{current_time}_{k}_{score_name}.png"
             pil_images[k].save(os.path.join(output_filepath, output_name))
 
 def generate(
@@ -208,11 +212,15 @@ def generate(
         realesrgan, #super resolution
     ) = load_params(input_text=input_text, confidence=confidence, variability=variability, rurealesrgan_multiplier=rurealesrgan_multiplier)
     pil_images = []
-    pil_images += generate_images_amt(vae, model,
+    scores = []
+    imgs, scores = generate_images_amt(vae, model,
         image_amount, realesrgan, generation_p, generation_k, prompt_text
     )
+    pil_images += imgs
+    scores += scores
 
-    save_pil_images(pil_images, output_filepath = output_filepath)
+    save_pil_images(pil_images, scores, output_filepath = output_filepath)
+    return scores
 
 """
 

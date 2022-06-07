@@ -50,7 +50,7 @@ def parameter_sweep(prompts, confidences, variabilities):
                         os.mkdir(directory_name)
                     print(f'generating directory: {directory_name}')
                     with torch.no_grad():
-                        generate(vae, model, prompt, confidence = confidence, variability = variability, rurealesrgan_multiplier=rurealesrgan_multiplier, output_filepath=directory_name, image_amount = 9)
+                        generate(vae, model, prompt, confidence = confidence, variability = variability, rurealesrgan_multiplier=rurealesrgan_multiplier, output_filepath=directory_name, filter_by_top = 9, image_amount = 20)
 
 
 if __name__ == '__main__':
@@ -84,7 +84,7 @@ if __name__ == '__main__':
 
 
 
-    
+
 ''' 
 checkpoint 
 

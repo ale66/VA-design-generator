@@ -195,6 +195,14 @@ def save_pil_images(
             output_name = f"{current_time}_{k}_score:{score}.png"
             pil_images[k].save(os.path.join(output_filepath, output_name))
 
+def filter_by_top(num_imgs: int, pil_images, scores):
+    if num_imgs < len(scores):
+        num_imgs = len(scores)-1
+    top_indices = np.argpartition(scores, -num_imgs)[-num_imgs:]
+    top_imgs = pil_images[top_indices]
+    return top_imgs
+
+
 def generate(
     vae,
     model,
@@ -203,6 +211,7 @@ def generate(
     variability,
     rurealesrgan_multiplier,
     output_filepath,
+    filter_by_top = None,
     image_amount = 9):
     (
         generation_p,
@@ -212,11 +221,11 @@ def generate(
     ) = load_params(input_text=input_text, confidence=confidence, variability=variability, rurealesrgan_multiplier=rurealesrgan_multiplier)
     pil_images = []
     scores = []
-    imgs, scores = generate_images_amt(vae, model,
+    pil_images, scores = generate_images_amt(vae, model,
         image_amount, realesrgan, generation_p, generation_k, prompt_text
     )
-    pil_images += imgs
-    scores += scores
+    if filter_by_top:
+        pil_images = filter_by_top(filter_by_top, pil_images, scores)
 
     save_pil_images(pil_images, scores, output_filepath = output_filepath)
     return scores

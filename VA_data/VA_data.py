@@ -21,7 +21,10 @@ import pandas as pd
 def get_objects_by_url(url: str):
   """ This returns the object numbers of all objects that 
   are in the response of some given url"""
-  vam_response = pd.read_csv(url)
+  try:
+    vam_response = pd.read_csv(url)
+  except:
+    return False
   df = pd.DataFrame(vam_response)
   system_numbers = df.systemNumber
   return system_numbers
@@ -115,8 +118,11 @@ def get_image_items(record, caption):
 def get_images_by_category(id = None, category = None, save = True):
 
     image_data = {}
-    for p in range(10):
+    for p in range(1000):
         system_numbers = get_objects_by_url(f'https://api.vam.ac.uk/v2/objects/search?id_category={id}&images_exist=1&response_format=csv&page={p}&page_size=100')
+        if system_numbers == False:
+            with open('saved_image_data_dict.pkl', 'wb') as f:
+                pickle.dump(image_data, f)
         print(f"num object records: {len(list(system_numbers))}")
     
         for i, obj in enumerate(system_numbers):
@@ -126,7 +132,7 @@ def get_images_by_category(id = None, category = None, save = True):
             img = get_image_from_obj_data(object_data)            
             if img is None:
                 continue
-            
+
             record = object_data["record"]
             caption = f'{p} {i} '
 
@@ -141,14 +147,34 @@ def get_images_by_category(id = None, category = None, save = True):
                 print(f"appending image with caption {caption} ")
                 cv2.imwrite(f"VA_data/{category}/{caption}.jpg", img)
 
-        with open('saved_image_data_dict.pkl', 'wb') as f:
-            pickle.dump(image_data, f)
+def get_all_images():
+    image_data = {}
+    os.mkdir('data/')
 
+    for p in range(200):
+        system_numbers = get_objects_by_url(f'https://collections.vam.ac.uk/search/?page={p}&page_size=50')
 
-categories = {"ceramics": "THES48982", "porcelain": "THES48907", "textiles":"THES48885", "clothing":"THES48975", "metalwork":"THES48920"}
+        for i, obj in enumerate(system_numbers):
 
-for k,v in categories.items():
-    get_images_by_category(id = v, category =  k, save = True)
+            req = requests.get(f'https://api.vam.ac.uk/v2/museumobject/{obj}')
+            object_data = req.json()
+            img = get_image_from_obj_data(object_data)
+            if img is None:
+                continue
 
+            record = object_data["record"]
+            caption = f'{p} {i} '
+
+            image_items, caption = get_image_items(record, caption)
+
+            image_data[obj] = image_items
+
+            with open(f'data/{p} {i}.txt', 'w') as f:
+                    f.write(caption)
+            cv2.imwrite(f"data/{p} {i}.jpg", img)
+
+get_all_images()
 # images = np.load('img_data.npy')
 # download_jpegs(images)
+categories = {"ceramics": "THES48982", "porcelain": "THES48907", "textiles":"THES48885", "clothing":"THES48975", "metalwork":"THES48920",
+"designs":"THES48968", "fashion":"THES48957", "SCRAN":"THES48897", "paintings":"THES48917", "ornament prints":"THES49038","drawings":"THES48966"}

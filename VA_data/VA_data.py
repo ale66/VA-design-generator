@@ -89,7 +89,8 @@ def get_image_items(record, caption):
 
     categories = get_item(categories, record['categories'])
     image_items['categories'] = categories
-    caption += f', {categories[0]}'
+    if len(categories) != 0:
+        caption += f', {categories[0]}'
 
     artists = get_item(artists, record['artistMakerPerson'])
     if len(artists) != 0:
@@ -149,10 +150,11 @@ def get_images_by_category(id = None, category = None, save = True):
 
 def get_all_images():
     image_data = {}
-    os.mkdir('data/')
+    if not os.path.exists('data/'):
+        os.mkdir('data/')
 
-    for p in range(200):
-        system_numbers = get_objects_by_url(f'https://collections.vam.ac.uk/search/?page={p}&page_size=50')
+    for p in range(11,200):
+        system_numbers = get_objects_by_url(f'https://api.vam.ac.uk/v2/objects/search/?images_exist=1&response_format=csv&page={p}&page_size=50')
 
         for i, obj in enumerate(system_numbers):
 

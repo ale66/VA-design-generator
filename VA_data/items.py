@@ -62,3 +62,11 @@ materials = ['bronze', 'glass', 'silver', 'wax', 'paper', 'silver-gilt', 'gold',
   'tourmaline', 'chrome', 'paktong', 'gun-metal', 'copper-gilt', 'nickel alloy', 'wrought iron', 'Pearls', 'soft paste porcelain', 'enamels', 'plique-a-jour enamel', 'cloisonné enamel', 'board', 'oxidised silver', 'gilt bronze', 'Ink', 'pen and ink', 
   'gilding metal', 'Aluminium', 'Stainless steel', 'latten', 'Wicker', 'Base metal', 'Opal', 'Silver-gilt', 'topaz', 'elephant ivory', 'rush', 'tin', 'Siena marble', 'bell metal', 'jasper', 'Serpentine', 'cast iron', 'oak', 'Wrought iron', 'bakelite', 
   'Cast iron', 'paint', 'smalt', 'size (material)', 'pigment', 'card', 'graphite', 'felt tip', 'felt tipped pen', 'card support', 'wash', 'pen', 'crayon', 'kraft paper', 'lapis lazuli']
+
+
+import os 
+import pickle
+
+
+with open('saved_image_data_dict.pkl', 'rb') as f:
+    loaded_dict = pickle.load(f)

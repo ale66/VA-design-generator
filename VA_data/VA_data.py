@@ -24,7 +24,7 @@ def get_objects_by_url(url: str):
   try:
     vam_response = pd.read_csv(url)
   except:
-    return False
+    return None
   df = pd.DataFrame(vam_response)
   system_numbers = df.systemNumber
   return system_numbers
@@ -75,6 +75,7 @@ def get_item(name_list, record):
             name_list.append(item)
     return name_list 
 
+from process_data import process_category
 def get_image_items(record, caption):
     image_items = {}
 
@@ -85,12 +86,21 @@ def get_image_items(record, caption):
     styles = []
     places = []
 
-    caption += record['materialsAndTechniques']
+    description = record['briefDescription']
+    description_words = description.split(' ')
+    bd = ''
+    for i in [0,1]:
+        if description_words[i].lower() == 'cover':
+            return None
+        caption += f'{description[i]} ' 
 
     categories = get_item(categories, record['categories'])
     image_items['categories'] = categories
+
     if len(categories) != 0:
-        caption += f', {categories[0]}'
+        processed_category = process_category(categories[0])
+        if processed_category is not None:
+            caption += f'{processed_category}'
 
     artists = get_item(artists, record['artistMakerPerson'])
     if len(artists) != 0:
@@ -104,79 +114,53 @@ def get_image_items(record, caption):
 
     materials = get_item(materials, record['materials'])
     image_items["materials"] = materials
+    if len(materials) != 0:
+        caption += materials[0]
 
     techniques = get_item(techniques, record['techniques'])        
     image_items['techniques'] = techniques
-
+    if len(techniques) != 0:
+        caption += f', {techniques[0]}'
     places = get_item(places, record['placesOfOrigin'])        
     image_items['places'] = places
     if len(places) != 0:
         caption += f', from {places[0]}'
 
-    print(caption)
     return image_items, caption
-
-def get_images_by_category(id = None, category = None, save = True):
-
-    image_data = {}
-    for p in range(1000):
-        system_numbers = get_objects_by_url(f'https://api.vam.ac.uk/v2/objects/search?id_category={id}&images_exist=1&response_format=csv&page={p}&page_size=100')
-        if system_numbers == False:
-            with open('saved_image_data_dict.pkl', 'wb') as f:
-                pickle.dump(image_data, f)
-        print(f"num object records: {len(list(system_numbers))}")
-    
-        for i, obj in enumerate(system_numbers):
-
-            req = requests.get(f'https://api.vam.ac.uk/v2/museumobject/{obj}')
-            object_data = req.json()
-            img = get_image_from_obj_data(object_data)            
-            if img is None:
-                continue
-
-            record = object_data["record"]
-            caption = f'{p} {i} '
-
-            image_items, caption = get_image_items(record, caption)
-
-            image_data[obj] = image_items
-
-            if save:
-
-                if not os.path.exists(f"VA_data/{category}"):
-                    os.mkdir(f"VA_data/{category}/")
-                print(f"appending image with caption {caption} ")
-                cv2.imwrite(f"VA_data/{category}/{caption}.jpg", img)
 
 def get_all_images():
     image_data = {}
     if not os.path.exists('data/'):
         os.mkdir('data/')
 
-    for p in range(11,200):
+    for p in range(200):
         system_numbers = get_objects_by_url(f'https://api.vam.ac.uk/v2/objects/search/?images_exist=1&response_format=csv&page={p}&page_size=50')
-
+        dates = []
         for i, obj in enumerate(system_numbers):
 
             req = requests.get(f'https://api.vam.ac.uk/v2/museumobject/{obj}')
             object_data = req.json()
-            img = get_image_from_obj_data(object_data)
-            if img is None:
-                continue
+            #img = get_image_from_obj_data(object_data)
+            #if img is None:
+            #    continue
 
             record = object_data["record"]
-            caption = f'{p} {i} '
+
+            caption = ''
 
             image_items, caption = get_image_items(record, caption)
 
+            if caption == '':
+                continue
+
             image_data[obj] = image_items
 
-            with open(f'data/{p} {i}.txt', 'w') as f:
-                    f.write(caption)
-            cv2.imwrite(f"data/{p} {i}.jpg", img)
+    with open('saved_image_data_dict.pkl', 'wb') as f:
+        pickle.dump(image_data, f)
 
+            #with open(f'data/{p} {i}.txt', 'w') as f:
+            #        f.write(caption)
+            #cv2.imwrite(f"data/{p} {i}.jpg", img)
 get_all_images()
 # images = np.load('img_data.npy')
 # download_jpegs(images)
-categories = {"ceramics": "THES48982", "porcelain": "THES48907", "textiles":"THES48885", "clothing":"THES48975", "metalwork":"THES48920",
-"designs":"THES48968", "fashion":"THES48957", "SCRAN":"THES48897", "paintings":"THES48917", "ornament prints":"THES49038","drawings":"THES48966"}

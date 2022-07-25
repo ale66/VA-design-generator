@@ -6,27 +6,32 @@ from deep_translator import DeepL as DeeplTranslator
 from translatepy import Translator
 ts = Translator()
 import csv
+import os
 
 random_crop_size = 240
 num_crops = 24
 
-def get_input_files(file_selector_glob, do_random_crop=False):
-    input_files = glob.glob(file_selector_glob, recursive=True)
-    for i in input_files:
-        if "_" in i:
-            raise ValueError(
-                "Please remove all underscores (the _ character) from your files before proceeding!"
-            )
-        if "'" in i:
-            raise ValueError(
-                "Please remove all apostrophes (the ' character) from your files before proceeding!"
-            )
+def get_input_files(big_glob, do_random_crop=False):
+    input_files = []
+    for subfolder in ['ceramics', 'fashion', 'metalwork', 'textiles', 'furniture']:
 
-    if len(input_files) == 0:
-        print(
-            "Your input files are empty! This will error out - make sure your file_selector_glob is formatted correctly!"
-        )
+        F = f'{big_glob}/{subfolder}/'
+        for i in os.listdir(F):
+            if "_" in i:
+                raise ValueError(
+                    "Please remove all underscores (the _ character) from your files before proceeding!"
+                )
+            if "'" in i:
+                new_name = i.replace("'", '')
+                os.rename(f'{F}/{i}',f'{F}/{new_name}' )
+                print(f'renamed {i} to {new_name}')
+        sub_files = glob.glob(f'{big_glob}/{subfolder}/*', recursive=True)
 
+        if len(sub_files) == 0:
+            print(
+                "Your input files are empty! This will error out - make sure your file_selector_glob is formatted correctly!"
+            )
+        input_files += sub_files
     if do_random_crop:
         Path("/content/crops").mkdir(parents=True, exist_ok=True)
         for image_path in input_files:
@@ -63,7 +68,7 @@ def set_input_text(input_text="", deepl_api_key=""):
 
 
 def write_data_desc(input_files, input_text="", use_filename=True, deepl_api_key=""):
-
+        
     with open("data_desc.csv", "w", newline="") as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=",")
         csvwriter.writerow(["", "name", "caption"])

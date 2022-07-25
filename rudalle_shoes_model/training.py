@@ -50,27 +50,24 @@ vae = get_vae().to("cuda")
 tokenizer = get_tokenizer()
 torch_args = Args(epoch_amt, learning_rate)
 
-training = False
 
+st = RuDalleDataset(csv_path="data_desc.csv", tokenizer=tokenizer,model=model)
 
-if training:
-    st = RuDalleDataset(csv_path=".data_desc.csv", tokenizer=tokenizer,model=model)
+train_dataloader = DataLoader(
+st, batch_size=torch_args.bs, shuffle=True, drop_last=True
+)
 
-    train_dataloader = DataLoader(
-    st, batch_size=torch_args.bs, shuffle=True, drop_last=True
-    )
-    model.train()
-    torch_args.wandb = False
+torch_args.wandb = False
+model.train()
+optimizer = AdamW(model.parameters(), lr=torch_args.lr)
 
-    optimizer = AdamW(model.parameters(), lr=torch_args.lr)
-
-    scheduler = torch.optim.lr_scheduler.OneCycleLR(
-        optimizer,
-        max_lr=torch_args.lr,
-        final_div_factor=500,
-        steps_per_epoch=len(train_dataloader),
-        epochs=torch_args.epochs,
-    )
+scheduler = torch.optim.lr_scheduler.OneCycleLR(
+    optimizer,
+    max_lr=torch_args.lr,
+    final_div_factor=500,
+    steps_per_epoch=len(train_dataloader),
+    epochs=torch_args.epochs,
+)
 # Setup logs
 
 def freeze(
@@ -89,7 +86,7 @@ def freeze(
             p.requires_grad = not freeze_emb
         elif "mlp" in name:
             p.requires_grad = not freeze_ff
-        elif "attn" in name:
+        elif "attention" in name:
             p.requires_grad = not freeze_attn
         else:
             p.requires_grad = not freeze_other
@@ -222,7 +219,6 @@ def train(model, input_files, args: Args, train_dataloader: RuDalleDataset):
         )
         save_counter = 0
         for epoch in range(args.epochs):
-            print(epoch)
             for text, images in train_dataloader:
                 device = model.get_param("device")
                 save_counter += 1
@@ -234,8 +230,6 @@ def train(model, input_files, args: Args, train_dataloader: RuDalleDataset):
                     )
                 )
                 image_input_ids = vae.get_codebook_indices(images)
-                print('image input ids')
-                print(image_input_ids)
                 input_ids = torch.cat((text, image_input_ids), dim=1)
                 _, loss = _forward(
                     model.module,
@@ -243,7 +237,7 @@ def train(model, input_files, args: Args, train_dataloader: RuDalleDataset):
                     attention_mask.half(),
                     return_loss=True,
                     use_cache=False,
-                    gradient_checkpointing=6,
+                    gradient_checkpointing=False,
                 )
                 loss = loss["image"]
                 # train step

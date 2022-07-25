@@ -5,11 +5,10 @@ from translatepy import Translator
 ts = Translator()
 
 """ Set file parameters"""
-file_selector_glob = "images-labelled/*"
+file_selector_glob = "images-labelled"
 
 '''Number of epochs - might want to try training for longer'''
 epoch_amt = 50
-
 '''Random crop might be useful if we want to artificially get more perspectives of the object'''
 do_random_crop = False
 

@@ -58,4 +58,4 @@ variability = "Ultra-Low" #default Ultra-High
 #Optimizer
 
 #superresolution
-rurealesrgan_multiplier = "x4"  # @param ["x1", "x2", "x4", "x8"]
+rurealesrgan_multiplier = "x8"  # @param ["x1", "x2", "x4", "x8"]

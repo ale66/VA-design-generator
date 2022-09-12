@@ -9,13 +9,14 @@ from dataset import *
 from utils import *
 import gc
 
-input_files = get_input_files(file_selector_glob, do_random_crop)
-input_text = ''
-print(f'Got {len(input_files)} images!')
+from vae import generate_high_res
+#input_files = get_input_files(file_selector_glob, do_random_crop)
+#input_text = ''
+#print(f'Got {len(input_files)} images!')
 
 
-original_folder = re.sub(r"[/*?]", "-", file_selector_glob)
-print("Identifier", original_folder)
+#original_folder = re.sub(r"[/*?]", "-", file_selector_glob)
+#print("Identifier", original_folder)
 
 def run_training():
 
@@ -64,15 +65,18 @@ def parameter_sweep(prompts, confidences, variabilities):
 
 if __name__ == '__main__':
 
-    run_training()
+    #  run_training()
 
     
 
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    low_res_img_path = '../../233.png'
 
-    #low_res_img_path = 'lowres_vase_clock.png'
+    imgs_to_convert = 'final/'
+    for low_res_img_path in os.listdir(imgs_to_convert):
 
-    #high_res = generate_high_res(low_res_img_path,rurealesrgan_multiplier,device)
-    #high_res.save('highresvaseclock2.png')
+        high_res = generate_high_res(f'final/{low_res_img_path}',rurealesrgan_multiplier,device)
+        high_res.save(f'final/high_res_{low_res_img_path}.png')
 
 
 

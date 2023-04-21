@@ -18,6 +18,7 @@ and the museum sector.
 
 The workshop will also provide participants with an opportunity to trial the prototype Design Generator application and provide feedback on its development
 
+![An example of a generated image](example-statuette.jpeg "An example of a generated image")
 
 ### The pipeline
 

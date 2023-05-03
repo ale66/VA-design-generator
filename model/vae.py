@@ -3,7 +3,7 @@ import gc
 import torch
 from einops import rearrange
 from PIL import Image
-from train import *
+from training import *
 from datetime import datetime
 import os
 from params import *

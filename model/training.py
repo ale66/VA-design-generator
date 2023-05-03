@@ -43,7 +43,7 @@ class Args:
         self.lr = learning_rate
         self.warmup_steps = 50
         self.wandb = False
-
+"""
 
 model = get_rudalle_model("Malevich", pretrained=True, fp16=True, device=device)
 vae = get_vae().to("cuda")
@@ -69,7 +69,7 @@ scheduler = torch.optim.lr_scheduler.OneCycleLR(
     epochs=torch_args.epochs,
 )
 # Setup logs
-
+"""
 def freeze(
     model,
     freeze_emb=True,

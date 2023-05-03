@@ -18,6 +18,7 @@ and the museum sector.
 
 The workshop will also provide participants with an opportunity to trial the prototype Design Generator application and provide feedback on its development
 
+![An example of a generated image](example-statuette.jpeg "An example of a generated image")
 
 ### The pipeline
 
@@ -35,4 +36,7 @@ This project is led by [Dr Joel McKim](https://www.bbk.ac.uk/our-staff/profile/8
 
 Further members are co-PI [Dr Alessandro Provetti](https://www.bbk.ac.uk/our-staff/profile/8005964/joel-mckim) from Birkbeck, University of London Dept. of Copmputer Science and Information System, [Daphne Demekas](https://github.com/daphnedemekas) and [Jo Lawson-Tancred](https://github.com/JoLawsonTancred).
 
+### Public engagement
+
+Our project was presented at the [Birkbeck Arts Week 2023](https://www.bbk.ac.uk/events/remote_event_view?id=36472).
 

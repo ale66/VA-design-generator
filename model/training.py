@@ -4,7 +4,7 @@ from model.params import *
 import torch
 import multiprocessing
 from psutil import virtual_memory
-from dataset import *
+from model.dataset import *
 from transformers import AdamW
 import torch.nn.functional as F
 from rudalle.dalle.utils import exists, is_empty

@@ -4,7 +4,7 @@ import os
 from model.params import *
 import re
 from PIL import Image
-from advanced_settings import *
+from model.advanced_settings import *
 from dataset import *
 from utils import *
 import gc

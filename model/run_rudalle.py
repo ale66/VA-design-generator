@@ -9,7 +9,7 @@ from model.dataset import *
 from model.utils import *
 import gc
 
-from vae import generate_high_res, generate
+from model.vae import generate_high_res, generate
 
 
 def run_training():

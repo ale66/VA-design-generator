@@ -1,7 +1,7 @@
 from PIL import Image
 import glob
 from pathlib import Path
-from advanced_settings import random_crop
+from model.advanced_settings import random_crop
 from deep_translator import DeepL as DeeplTranslator 
 from translatepy import Translator
 ts = Translator()

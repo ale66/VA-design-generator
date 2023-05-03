@@ -1,6 +1,6 @@
 
 from model.rudalle import get_rudalle_model, get_tokenizer, get_vae
-from params import *
+from model.params import *
 import torch
 import multiprocessing
 from psutil import virtual_memory

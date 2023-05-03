@@ -139,7 +139,7 @@ def get_rudalle_model(name, pretrained=True, fp16=False, device='cpu', cache_dir
     if pretrained:
         cache_dir = os.path.join(cache_dir, name)
         config_file_url = hf_hub_url(repo_id=config['repo_id'], filename=config['filename'])
-        cached_download(config_file_url, cache_dir=cache_dir, force_filename=config['filename'])
+        #cached_download(config_file_url, cache_dir=cache_dir, force_filename=config['filename'])
         checkpoint = torch.load(os.path.join(cache_dir, config['filename']), map_location='cpu')
         model.load_state_dict(checkpoint)
     if fp16:

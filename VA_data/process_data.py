@@ -3,13 +3,13 @@
 from concurrent.futures import process
 
 
-processed_categories = ['Entertainment & Leisure', 'Education & Learning', 'Prints', 'Designs', 'Books', 
+processed_categories = ['Education & Learning', 'Prints', 'Designs', 'Books', 
 'Cameras', 'Jewellery', 'Drawings', 'Science',
- 'Architectural drawings', 'Furniture', 'Christianity', 'Posters', 'Advertising',
+ 'Architectural drawings', 'Furniture', 'Christianity',
  'Transport',  'Vases', 'ELISE', 'Textiles', 'Ceramics', 'Bone China','Judaism',
-  'Black History', 'Arms & Armour', 'Metalwork', 'Glass', 'Children & Childhood', 'Africa', 'Paintings', 'Ornament prints', 'Dolls & Toys', 
+  'Black History', 'Metalwork', 'Glass', 'Children & Childhood', 'Africa', 'Paintings', 'Ornament prints', 'Dolls & Toys', 
   'Boats and ships', 'Death', 'Landscapes', 'Architecture', 'Royalty', 'Animals and Wildlife', 'Wall coverings', 'Hinduism',
-   'Rubbings', 'Periodicals', 'Illustration', 'Music', 'Interiors', 'Fashion', 'Accessories',
+   'Rubbings', 'Illustration', 'Interiors', 'Fashion', 'Accessories',
    'Sculpture', 'Coins & Medals',  'Embroidery',
    'Hair and hairstyles', 'Portraits', 'Theatre', 'Islam', 'Medieval and renaissance', 'Politics', 'Caricatures & Cartoons', 'Gender and Sexuality']
 
@@ -118,9 +118,8 @@ def process_material(material):
     if material in material_aliases:
         material = material_alias_dict[material]
         return material
-    elif material in processed_materials:
+    else:
         return material
-    return None
 
 processed_techniques = ['drawn', 'print-making', 'engraving (printing process)', 'painted', 'printing', 
 'letterpress', 'letterpress printing', 'painting (image-making)', 'woodcut', 
@@ -154,9 +153,8 @@ def process_technique(technique):
     if technique.lower() in technique_aliases:
         technique = technique_alias_dict[technique.lower()]
         return technique 
-    elif technique.lower() in processed_techniques:
+    else:
         return technique
-    return None 
 
 processed_styles = ['Egyptian', 'Gothic Revival', 'Louis XIV', 'Early 20th Century', 'Victorian', 'Renaissance', 'Qing',
  'Rimpa', 'Blue and white (Asia)', 'Mughal', 'Lucknow', 'Pahari', 'Jaipur', 'Edo', 'Kalighat', 'Böttger', 'Yuan', 'STUDIO', 'Contemporary', 
@@ -244,7 +242,7 @@ processed_countries = ['New Zealand', 'Korea','South Africa', 'Thailand', 'Europ
 all_cities = [england_cities, spanish_cities, indian_cities, malaysian_cities, italian_cities, german_cities, french_cities, israeli_cities, indonesian_cities, swedish_cities, US_states, chinese_cities, russian_cities, 
 dutch_cities, finnish_cities, canadian_cities, danish_cities, belgium_cities, norwegian_cities, portuguese_cities, polish_cities, swiss_cities, latvian_cities, pakistani_cities]
 
-city_countries = {"Egypt": [], "India": indian_cities, "Malaysia": malaysian_cities, "Italy": italian_cities, "Germany": german_cities, "England / Britain / United Kingdom": england_cities, "France": french_cities, "Israel": israeli_cities, "Netherlands": dutch_cities, 
+city_countries = {"Egypt": [], "India": indian_cities, "Malaysia": malaysian_cities, "Italy": italian_cities, "Germany": german_cities, "United Kingdom": england_cities, "France": french_cities, "Israel": israeli_cities, "Netherlands": dutch_cities, 
 "Indonesia" :indonesian_cities, "Sweden" : swedish_cities, "Russia": russian_cities, "Denmark": danish_cities, 'United States of America (USA)': US_states, "China": chinese_cities, "Iceland": [], "Syria": [], "Belgium": belgium_cities, "Norway": norwegian_cities, 
 "Spain":spanish_cities, "Finland": finnish_cities, "Canada":canadian_cities, "Ghana": [], "Latvia": latvian_cities, "Ethipia": [], "Switzerland":swiss_cities, "Japan": [], "Portugal": portuguese_cities, "Malta":[], "Turkey":[], "Poland": polish_cities, "Ireland": [],
 "Pakistan": pakistani_cities, "Sri Lanka": [], "Turkey":turkish_cities, "Iran":iranian_cities, "Thailand":thai_cities }
@@ -253,7 +251,7 @@ city_country_alias = {}
 for k, v in city_countries.items():
     if len(v) != 0:
         for city in v:
-            city_country_alias[v] = k
+            city_country_alias[city] = k
 
 def process_place(place):
     if place in country_aliases:
@@ -264,7 +262,7 @@ def process_place(place):
         if place in cities:
             place = city_country_alias[place]
             return place
-    return None
+    return place
 
 def process_artist(artist):
     pass 

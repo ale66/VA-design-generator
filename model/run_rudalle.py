@@ -64,7 +64,7 @@ def parameter_sweep(prompts, confidences, variabilities):
 
 if __name__ == '__main__':
 
-    run_training()
+    #run_training()
 
     
 

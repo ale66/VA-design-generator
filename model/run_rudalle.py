@@ -23,7 +23,7 @@ def run_training():
     print("Identifier", original_folder)
     print('Loading arguments for training ...')
     #input_text = write_data_desc(input_files, input_text, use_filename=True)
-    from training import freeze, train, train_dataloader, Args, model
+    from model.training import freeze, train, train_dataloader, Args, model
 
     torch_args = Args(epoch_amt, learning_rate)
     if not os.path.exists(torch_args.save_dir):

@@ -1,7 +1,7 @@
 
 # import torch
 import os
-from params import *
+from model.params import *
 import re
 from PIL import Image
 from advanced_settings import *

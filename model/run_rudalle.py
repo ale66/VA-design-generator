@@ -9,14 +9,8 @@ from dataset import *
 from utils import *
 import gc
 
-from vae import generate_high_res
-#input_files = get_input_files(file_selector_glob, do_random_crop)
-#input_text = ''
-#print(f'Got {len(input_files)} images!')
+from vae import generate_high_res, generate
 
-
-#original_folder = re.sub(r"[/*?]", "-", file_selector_glob)
-#print("Identifier", original_folder)
 
 def run_training():
 
@@ -49,8 +43,7 @@ def run_training():
     # freeze params to
     train(frozen_model, input_files, torch_args, train_dataloader)
 
-#if do_resize:
-#    vae.decode = partial(slow_decode, vae)
+
 def parameter_sweep(prompts, confidences, variabilities):
     for prompt in prompts:
             for confidence in confidences:
@@ -65,13 +58,8 @@ def parameter_sweep(prompts, confidences, variabilities):
 
 if __name__ == '__main__':
 
-#<<<<<<< HEAD:model/run_rudalle.py
     run_training()
-#=======
-    #  run_training()
-#>>>>>>> 9498054514ed9a427985a592e7fefb051a70a3f0:rudalle_shoes_model/run_rudalle.py
 
-    
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     low_res_img_path = '../../233.png'
@@ -81,31 +69,3 @@ if __name__ == '__main__':
 
         high_res = generate_high_res(f'final/{low_res_img_path}',rurealesrgan_multiplier,device)
         high_res.save(f'final/high_res_{low_res_img_path}.png')
-
-
-
-
-''' 
-checkpoint 
-
-confidence
-
-variability 
-
-prompt
-
-
-prompts: 
-- glass shoe 
-- clocks
-- 1980 vase 
-- vase shoe 
-- clock shoe 
-- vase clock 
-- metal shoe
-- ceramic shoe 
-
-
-
-
-'''

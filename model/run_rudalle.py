@@ -6,7 +6,7 @@ import re
 from PIL import Image
 from model.advanced_settings import *
 from model.dataset import *
-from utils import *
+from model.utils import *
 import gc
 
 from vae import generate_high_res, generate

@@ -18,6 +18,7 @@ and the museum sector.
 
 The workshop will also provide participants with an opportunity to trial the prototype Design Generator application and provide feedback on its development
 
+
 ![An example of a generated image](example-statuette.jpeg "An example of a generated image")
 
 ### The pipeline
@@ -34,9 +35,15 @@ Our work is funded by [UKRI/AHRC](https://www.ukri.org/councils/ahrc/) via the C
 
 This project is led by [Dr Joel McKim](https://www.bbk.ac.uk/our-staff/profile/8005964/joel-mckim)  directory of the [Vasari Centre for Arts and Technology](http://www7.bbk.ac.uk/vasari/) from Birkbeck, University of London, [Dept. of Film, Media and Cultural Studies](https://www.bbk.ac.uk/departments/culture).
 
-Further members are co-PI [Dr Alessandro Provetti](https://www.bbk.ac.uk/our-staff/profile/8005964/joel-mckim) from Birkbeck, University of London Dept. of Copmputer Science and Information System, [Daphne Demekas](https://github.com/daphnedemekas) and [Jo Lawson-Tancred](https://github.com/JoLawsonTancred).
+Further members are co-PI [Dr Alessandro Provetti](https://github.com/ale66) from Birkbeck, University of London Dept. of Copmputer Science and Information System, [Daphne Demekas](https://github.com/daphnedemekas) and [Jo Lawson-Tancred](https://github.com/JoLawsonTancred).
 
 ### Public engagement
 
-Our project was presented at the [Birkbeck Arts Week 2023](https://www.bbk.ac.uk/events/remote_event_view?id=36472).
+Our project was presented to students and the general public at the [Birkbeck Arts Week 2023](https://www.bbk.ac.uk/events/remote_event_view?id=36472).
 
+Our project was presented to an academic/research audience at the [Museum Analytics: New Directions](https://kingsdh.net/2023/04/05/museum-analytics-programme/) conference at King's College in May 2023.
+
+[<img src   = "https://kingsdh.net/wp-content/uploads/2022/11/Museum-Analytics-poster-1536x960.png"
+      alt   = "Museum Analytics: New Directions"
+      style = "float: none; margin-right: 10px; width:400px;" 
+/>](https://kingsdh.net/2023/04/05/museum-analytics-programme/) 
